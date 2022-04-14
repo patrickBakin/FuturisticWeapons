@@ -449,6 +449,12 @@ simulated state Stationary
 		local KFPawn_Monster KPM;
 		foreach WorldInfo.AllPawns(class'KFPawn_Monster',KPM,self.Location,800)
 		{	
+
+
+			if(FastTrace(self.Location, KPM.Location, vect(0,0,0)) == false)
+			{
+					continue;
+			}
 			if(KPM.Physics != PHYS_Flying && KPM.IsAliveAndWell() && !KPM.bIsHeadless)
 			{	
 				//KFAIController(KPM.Controller).Enemy = none;

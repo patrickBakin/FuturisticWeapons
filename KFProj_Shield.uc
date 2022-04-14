@@ -12,7 +12,7 @@ var() float ProximityAlertIntervalClose;
 var transient float ProximityAlertTimer;
 
 /** Visual component of this projectile (we don't use ProjEffects particle system because we need to manipulate the MIC) */
-var StaticMeshComponent ChargeMesh;
+var() SkeletalMeshComponent ChargeMesh;
 /** Mesh MIC, used to make LED blink */
 var MaterialInstanceConstant ChargeMIC;
 /** Dynamic light for blinking */
@@ -134,10 +134,11 @@ simulated function BlinkOn()
 	if( BlinkPSC == none )
 	{
 		//BlinkPSC = WorldInfo.MyEmitterPool.SpawnEmitter(BlinkFX, Location + (vect(0,0,4) + vect(8,0,0) >> Rotation),, self,,, true);
-		BlinkPSC = WorldInfo.MyEmitterPool.SpawnEmitter(BlinkFX, Location + vect(0,0,12),, self,,, true);
+		BlinkPSC = WorldInfo.MyEmitterPool.SpawnEmitterMeshAttachment(BlinkFX,ChargeMesh,'RW_Tower');
 	}
 
-	BlinkPSC.SetFloatParameter('Glow', 1.0);
+	BlinkPSC.SetScale3D(vect(1.3,1.3,1.3));
+	BlinkPSC.SetFloatParameter('Glow', 2.0);
 
 	ChargeMIC.SetVectorParameterValue('Vector_GlowColor', BlinkColorOn);
 	BlinkLightComp.SetEnabled( true );
@@ -382,7 +383,7 @@ simulated function SetShield()
 		CylinderComponent.SetBlockRigidBody(True);
 	}
 	//ChargeMesh.AttachComponent(CylinderComponent,'RW_Weapon');
-	AttachComponent(CylinderComponent);
+	 AttachComponent(CylinderComponent);
 	//AttachComponent(CylinderComponent(CollisionComponent));
 	//ShieldAct=Spawn(class'Shield.Shield',self,,self.Location,,,true);
 
@@ -405,6 +406,7 @@ function Detonate()
     		C4WeaponOwner.RemoveDeployedCharge(, self);
     	}
     }
+
     ClearCorpses();
 	ExplosionNormal = vect(0,0,1) >> Rotation;
 	Explode( Location, ExplosionNormal );
@@ -415,9 +417,10 @@ simulated function Explode(vector HitLocation, vector HitNormal)
 	if( WorldInfo.NetMode != NM_DedicatedServer )
 	{
 		BlinkOff();
+		BlinkPSC=None;
 		//BlinkPSC=None;
-		//ChargeMesh.DetachComponent(CC);
 		DetachComponent(CylinderComponent);
+		//DetachComponent(CylinderComponent);
 	}
 	//ShieldAct.Destroy();
 	//CC=none;
@@ -443,8 +446,8 @@ simulated function Disintegrate( rotator InDisintegrateEffectRotation )
 	{
 		BlinkOff();
 		//DetachShieldFX();
-		//ChargeMesh.DetachComponent(CC);
 		DetachComponent(CylinderComponent);
+		//DetachComponent(CylinderComponent);
 		
 	
 	}
@@ -695,23 +698,23 @@ defaultproperties
 	Components.Add(BlinkPointLight)
 
 	// projectile mesh (use this instead of ProjEffects particle system)
-//	Begin Object Class=SkeletalMeshComponent Name=SkeletalMeshComponent0
-//		SkeletalMesh=SkeletalMesh'WEP_3P_C4_MESH.Wep_3rdP_C4_Rig_RightHand'
-//		bCastDynamicShadow=FALSE
-//		CollideActors=false
-//		LightingChannels=(bInitialized=True,Dynamic=True,Indoor=True,Outdoor=True)
-//	End Object
-//	ChargeMesh=SkeletalMeshComponent0
-//	Components.Add(SkeletalMeshComponent0)
-
- 	Begin Object Class=StaticMeshComponent Name=StaticMeshComponent0
-		StaticMesh=StaticMesh'WEP_3P_C8_MESH.Wep_C8_Projectile' // still is SpiderCoil
+	Begin Object Class=SkeletalMeshComponent Name=SkeletalMeshComponent0
+		SkeletalMesh=SkeletalMesh'WEP_3P_C8_MESH.Wep_C8_SkeletalMESH'
 		bCastDynamicShadow=FALSE
 		CollideActors=false
 		LightingChannels=(bInitialized=True,Dynamic=True,Indoor=True,Outdoor=True)
 	End Object
-	ChargeMesh=StaticMeshComponent0
-	Components.Add(StaticMeshComponent0)
+	ChargeMesh=SkeletalMeshComponent0
+	Components.Add(SkeletalMeshComponent0)
+
+ //	Begin Object Class=StaticMeshComponent Name=StaticMeshComponent0
+//		StaticMesh=StaticMesh'WEP_3P_C8_MESH.Wep_C8_Projectile' // still is SpiderCoil
+//		bCastDynamicShadow=FALSE
+//		CollideActors=false
+//		LightingChannels=(bInitialized=True,Dynamic=True,Indoor=True,Outdoor=True)
+//	End Object
+//	ChargeMesh=StaticMeshComponent0
+//	Components.Add(StaticMeshComponent0)
 
 
 
