@@ -363,14 +363,14 @@ simulated event bool EncroachingOn(Actor Other)
 simulated function SetShield()
 {	
 	//local KActor SA;
-	WorldInfo.Game.Broadcast(none,"Work1",'asd');
+	
 	
 	//SetPhysics(PHYS_Projectile);
 	if(CylinderComponent!=None)
 	{	
 		
 		
-		WorldInfo.Game.Broadcast(none,"Work2",'asd');
+		
 		//CylinderComponent.SetHidden(False);
 		CylinderComponent.SetCylinderSize(195*1.83,500);
 		//CylinderComponent.SetOnlyOwnerSee(True);
