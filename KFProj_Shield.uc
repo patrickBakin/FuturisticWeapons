@@ -364,11 +364,12 @@ simulated function SetShield()
 {	
 	//local KActor SA;
 	WorldInfo.Game.Broadcast(none,"Work1",'asd');
-	LogInternal("Work1");
+	
 	//SetPhysics(PHYS_Projectile);
 	if(CylinderComponent!=None)
 	{	
-		LogInternal("Work2");
+		
+		
 		WorldInfo.Game.Broadcast(none,"Work2",'asd');
 		//CylinderComponent.SetHidden(False);
 		CylinderComponent.SetCylinderSize(195*1.83,500);
